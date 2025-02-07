@@ -1,0 +1,1 @@
+<view class="container"><button class="login-btn" bindtap="{{a}}">微信登录</button></view>
