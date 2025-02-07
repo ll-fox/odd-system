@@ -8,45 +8,18 @@ const _sfc_main = {
         courier: "",
         remark: ""
       },
-      courierCompanies: ["顺丰速运", "圆通快递", "中通快递", "韵达快递", "京东物流", "邮政快递"],
-      userInfo: null
+      courierCompanies: ["顺丰", "中通", "圆通", "申通", "韵达"]
     };
   },
-  onLoad() {
-    this.checkLogin();
-  },
   methods: {
-    async checkLogin() {
-      const token = common_vendor.index.getStorageSync("token");
-      if (token) {
-        this.userInfo = common_vendor.index.getStorageSync("userInfo");
-        return;
-      }
-      common_vendor.index.redirectTo({
-        url: "/pages/login/login"
-      });
-    },
     onCourierChange(e) {
       this.form.courier = this.courierCompanies[e.detail.value];
     },
     onSubmit() {
-      if (!this.form.trackingNumber) {
-        common_vendor.index.showToast({
-          title: "请填写快递单号",
-          icon: "none"
-        });
-        return;
-      }
-      if (!this.form.courier) {
-        common_vendor.index.showToast({
-          title: "请选择快递公司",
-          icon: "none"
-        });
-        return;
-      }
-      common_vendor.index.__f__("log", "at pages/index/index.vue:70", "表单数据:", this.form);
+      common_vendor.index.__f__("log", "at pages/index/index.vue:41", "提交的表单数据:", this.form);
       common_vendor.index.showToast({
-        title: "提交成功"
+        title: "提交成功",
+        icon: "success"
       });
     }
   }

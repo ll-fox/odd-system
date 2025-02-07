@@ -29,47 +29,19 @@
 					courier: '',
 					remark: ''
 				},
-				courierCompanies: ['顺丰速运', '圆通快递', '中通快递', '韵达快递', '京东物流', '邮政快递'],
-				userInfo: null
+				courierCompanies: ['顺丰', '中通', '圆通', '申通', '韵达']
 			}
 		},
-		onLoad() {
-			this.checkLogin()
-		},
 		methods: {
-			async checkLogin() {
-				const token = uni.getStorageSync('token')
-				if (token) {
-					this.userInfo = uni.getStorageSync('userInfo')
-					return
-				}
-				// 未登录则跳转到登录页面
-				uni.redirectTo({
-					url: '/pages/login/login'
-				})
-			},
 			onCourierChange(e) {
 				this.form.courier = this.courierCompanies[e.detail.value]
 			},
 			onSubmit() {
-				if (!this.form.trackingNumber) {
-					uni.showToast({
-						title: '请填写快递单号',
-						icon: 'none'
-					})
-					return
-				}
-				if (!this.form.courier) {
-					uni.showToast({
-						title: '请选择快递公司',
-						icon: 'none'
-					})
-					return
-				}
-				// 这里可以添加提交逻辑
-				console.log('表单数据:', this.form)
+				// 提交表单逻辑
+				console.log('提交的表单数据:', this.form)
 				uni.showToast({
-					title: '提交成功'
+					title: '提交成功',
+					icon: 'success'
 				})
 			}
 		}
@@ -79,15 +51,13 @@
 <style>
 	.content {
 		padding: 20px;
-		background: linear-gradient(135deg, #fff7e6, #fff3e0);
-		min-height: 100vh;
 	}
 
 	.form-container {
 		background-color: #fff;
+		border-radius: 8px;
 		padding: 20px;
-		border-radius: 16px;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 	}
 
 	.form-item {
@@ -97,39 +67,36 @@
 	.label {
 		display: block;
 		font-size: 14px;
-		color: #333;
+		color: #666;
 		margin-bottom: 8px;
-		font-weight: 500;
 	}
 
-	.input,
-	.picker-text,
-	.textarea {
+	.input {
 		width: 100%;
 		height: 40px;
-		line-height: 40px;
 		padding: 0 12px;
-		border: 1px solid #e0e0e0;
-		border-radius: 8px;
-		box-sizing: border-box;
-		transition: all 0.3s ease;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		font-size: 14px;
 	}
 
-	.input:focus,
-	.textarea:focus {
-		border-color: #ffc107;
-		box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.2);
-	}
-
-	.picker-text {
-		color: #666;
-		background-color: #f8f9fa;
+	.picker {
+		width: 100%;
+		height: 40px;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		padding: 0 12px;
+		line-height: 40px;
+		font-size: 14px;
 	}
 
 	.textarea {
+		width: 100%;
 		height: 100px;
 		padding: 12px;
-		line-height: 1.5;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		font-size: 14px;
 	}
 
 	.submit-btn {

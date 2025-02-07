@@ -9,13 +9,6 @@
 		methods: {
 			async handleLogin() {
 				try {
-					console.log('开始获取code')
-					const codeRes = await uni.login()
-					if (codeRes.errMsg !== 'login:ok') {
-						throw new Error('获取code失败')
-					}
-					console.log('获取到的code:', codeRes.code)
-					
 					console.log('开始获取用户信息')
 					const res = await uni.getUserProfile({
 						desc: '获取用户信息'
@@ -24,7 +17,15 @@
 					if (!res || !res.userInfo) {
 						throw new Error('获取用户信息失败')
 					}
+					
 					console.log('用户信息:', res.userInfo)
+					
+					console.log('开始获取code')
+					const codeRes = await uni.login()
+					if (codeRes.errMsg !== 'login:ok') {
+						throw new Error('获取code失败')
+					}
+					console.log('获取到的code:', codeRes.code)
 					
 					console.log('调用云函数登录')
 					const loginRes = await uniCloud.callFunction({
