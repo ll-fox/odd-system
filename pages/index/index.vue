@@ -58,7 +58,10 @@
 				try {
 					const res = await uniCloud.callFunction({
 						name: 'feedback',
-						data: this.form
+						data: {
+							...this.form,
+							status: '待处理'
+						}
 					})
 
 					if (res.result.code === 200) {
@@ -144,7 +147,7 @@
 		width: 100%;
 		height: 44px;
 		line-height: 44px;
-		background: #007AFF;
+		background-color: #c49b45;
 		color: #fff;
 		border-radius: 10px;
 		margin-top: 20px;

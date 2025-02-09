@@ -35,7 +35,10 @@ const _sfc_main = {
       try {
         const res = await common_vendor.er.callFunction({
           name: "feedback",
-          data: this.form
+          data: {
+            ...this.form,
+            status: "待处理"
+          }
         });
         if (res.result.code === 200) {
           common_vendor.index.showToast({
