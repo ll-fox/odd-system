@@ -1,6 +1,0 @@
-{
-  "name": "wechat-login",
-  "dependencies": {
-    "uni-id": "^1.1.6"
-  }
-} 

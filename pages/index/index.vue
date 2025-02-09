@@ -29,19 +29,35 @@
 					courier: '',
 					remark: ''
 				},
-				courierCompanies: ['顺丰', '中通', '圆通', '申通', '韵达']
+				courierCompanies: ['顺丰速运', '圆通快递', '中通快递', '韵达快递', '京东物流', '邮政快递']
 			}
+		},
+		onLoad() {
+
 		},
 		methods: {
 			onCourierChange(e) {
 				this.form.courier = this.courierCompanies[e.detail.value]
 			},
 			onSubmit() {
-				// 提交表单逻辑
-				console.log('提交的表单数据:', this.form)
+				if (!this.form.trackingNumber) {
+					uni.showToast({
+						title: '请填写快递单号',
+						icon: 'none'
+					})
+					return
+				}
+				if (!this.form.courier) {
+					uni.showToast({
+						title: '请选择快递公司',
+						icon: 'none'
+					})
+					return
+				}
+				// 这里可以添加提交逻辑
+				console.log('表单数据:', this.form)
 				uni.showToast({
-					title: '提交成功',
-					icon: 'success'
+					title: '提交成功'
 				})
 			}
 		}
@@ -55,9 +71,8 @@
 
 	.form-container {
 		background-color: #fff;
-		border-radius: 8px;
 		padding: 20px;
-		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+		border-radius: 8px;
 	}
 
 	.form-item {
@@ -67,57 +82,39 @@
 	.label {
 		display: block;
 		font-size: 14px;
-		color: #666;
+		color: #333;
 		margin-bottom: 8px;
 	}
 
-	.input {
+	.input,
+	.picker-text,
+	.textarea {
 		width: 100%;
 		height: 40px;
-		padding: 0 12px;
+		line-height: 40px;
+		padding: 0 10px;
 		border: 1px solid #ddd;
 		border-radius: 4px;
-		font-size: 14px;
+		box-sizing: border-box;
 	}
 
-	.picker {
-		width: 100%;
-		height: 40px;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		padding: 0 12px;
-		line-height: 40px;
-		font-size: 14px;
+	.picker-text {
+		color: #999;
 	}
 
 	.textarea {
-		width: 100%;
 		height: 100px;
-		padding: 12px;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 14px;
+		padding: 10px;
+		line-height: 1.5;
 	}
 
 	.submit-btn {
 		width: 100%;
-		height: 48px;
-		line-height: 48px;
-		background: linear-gradient(135deg, #ffc107, #ffab00);
+		height: 40px;
+		line-height: 40px;
+		background-color: #007aff;
 		color: #fff;
-		border-radius: 8px;
+		border-radius: 4px;
 		margin-top: 20px;
-		font-size: 16px;
-		font-weight: 500;
-		border: none;
-		transition: all 0.3s ease;
-	}
-
-	.submit-btn:active {
-		transform: scale(0.98);
-	}
-
-	.submit-btn:hover {
-		opacity: 0.9;
 	}
 </style>

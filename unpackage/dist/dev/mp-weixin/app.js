@@ -5,7 +5,7 @@ if (!Math) {
   "./pages/index/index.js";
 }
 const _sfc_main = {
-  onLaunch() {
+  onLaunch: function() {
     common_vendor.index.__f__("log", "at App.vue:4", "App Launch");
   },
   onShow: function() {
