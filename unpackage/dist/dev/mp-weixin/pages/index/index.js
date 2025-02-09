@@ -17,7 +17,7 @@ const _sfc_main = {
     onCourierChange(e) {
       this.form.courier = this.courierCompanies[e.detail.value];
     },
-    onSubmit() {
+    async onSubmit() {
       if (!this.form.trackingNumber) {
         common_vendor.index.showToast({
           title: "请填写快递单号",
@@ -32,10 +32,32 @@ const _sfc_main = {
         });
         return;
       }
-      common_vendor.index.__f__("log", "at pages/index/index.vue:58", "表单数据:", this.form);
-      common_vendor.index.showToast({
-        title: "提交成功"
-      });
+      try {
+        const res = await common_vendor.er.callFunction({
+          name: "feedback",
+          data: this.form
+        });
+        if (res.result.code === 200) {
+          common_vendor.index.showToast({
+            title: "提交成功"
+          });
+          this.form = {
+            trackingNumber: "",
+            courier: "",
+            remark: ""
+          };
+        } else {
+          common_vendor.index.showToast({
+            title: res.result.message || "提交失败",
+            icon: "none"
+          });
+        }
+      } catch (error) {
+        common_vendor.index.showToast({
+          title: "网络错误，请重试",
+          icon: "none"
+        });
+      }
     }
   }
 };

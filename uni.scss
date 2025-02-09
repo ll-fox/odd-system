@@ -13,25 +13,23 @@
  */
 
 /* 颜色变量 */
-
-/* 行为相关颜色 */
-$uni-color-primary: #007aff;
-$uni-color-success: #4cd964;
-$uni-color-warning: #f0ad4e;
-$uni-color-error: #dd524d;
+$uni-color-primary: #007AFF; // 苹果蓝
+$uni-color-success: #34C759; // 苹果绿
+$uni-color-warning: #FF9500; // 苹果橙
+$uni-color-error: #FF3B30; // 苹果红
 
 /* 文字基本颜色 */
-$uni-text-color:#333;//基本色
-$uni-text-color-inverse:#fff;//反色
-$uni-text-color-grey:#999;//辅助灰色，如加载更多的提示信息
-$uni-text-color-placeholder: #808080;
-$uni-text-color-disable:#c0c0c0;
+$uni-text-color: #1C1C1E; // 深色文字
+$uni-text-color-inverse: #FFFFFF; // 白色文字
+$uni-text-color-grey: #8E8E93; // 灰色文字
+$uni-text-color-placeholder: #C7C7CC; // 占位符颜色
+$uni-text-color-disable: #D1D1D6; // 禁用颜色
 
 /* 背景颜色 */
-$uni-bg-color:#ffffff;
-$uni-bg-color-grey:#f8f8f8;
-$uni-bg-color-hover:#f1f1f1;//点击状态颜色
-$uni-bg-color-mask:rgba(0, 0, 0, 0.4);//遮罩颜色
+$uni-bg-color: #FFFFFF; // 白色背景
+$uni-bg-color-grey: #F2F2F7; // 浅灰背景
+$uni-bg-color-hover: rgba(0, 0, 0, 0.05); // 点击状态颜色
+$uni-bg-color-mask: rgba(0, 0, 0, 0.4); // 遮罩颜色
 
 /* 边框颜色 */
 $uni-border-color:#c8c7cc;

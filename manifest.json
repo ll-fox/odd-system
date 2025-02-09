@@ -1,7 +1,7 @@
 {
     "name" : "单号系统",
-    "appid" : "",
-    "description" : "",
+    "appid" : "__UNI__9DA10E5",
+    "description" : "单号系统",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -50,7 +50,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx4613d18f3badf3d1",
         "setting" : {
             "urlCheck" : false
         },

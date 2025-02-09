@@ -39,7 +39,7 @@
 			onCourierChange(e) {
 				this.form.courier = this.courierCompanies[e.detail.value]
 			},
-			onSubmit() {
+			async onSubmit() {
 				if (!this.form.trackingNumber) {
 					uni.showToast({
 						title: '请填写快递单号',
@@ -54,11 +54,35 @@
 					})
 					return
 				}
-				// 这里可以添加提交逻辑
-				console.log('表单数据:', this.form)
-				uni.showToast({
-					title: '提交成功'
-				})
+
+				try {
+					const res = await uniCloud.callFunction({
+						name: 'feedback',
+						data: this.form
+					})
+
+					if (res.result.code === 200) {
+						uni.showToast({
+							title: '提交成功'
+						})
+						// 清空表单
+						this.form = {
+							trackingNumber: '',
+							courier: '',
+							remark: ''
+						}
+					} else {
+						uni.showToast({
+							title: res.result.message || '提交失败',
+							icon: 'none'
+						})
+					}
+				} catch (error) {
+					uni.showToast({
+						title: '网络错误，请重试',
+						icon: 'none'
+					})
+				}
 			}
 		}
 	}
@@ -67,12 +91,16 @@
 <style>
 	.content {
 		padding: 20px;
+		background: linear-gradient(180deg, #F5F5F7 0%, #FFFFFF 100%);
 	}
 
 	.form-container {
-		background-color: #fff;
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(20px);
 		padding: 20px;
-		border-radius: 8px;
+		border-radius: 12px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.3);
 	}
 
 	.form-item {
@@ -82,8 +110,9 @@
 	.label {
 		display: block;
 		font-size: 14px;
-		color: #333;
+		color: #1C1C1E;
 		margin-bottom: 8px;
+		font-weight: 500;
 	}
 
 	.input,
@@ -92,29 +121,41 @@
 		width: 100%;
 		height: 40px;
 		line-height: 40px;
-		padding: 0 10px;
-		border: 1px solid #ddd;
-		border-radius: 4px;
+		padding: 0 12px;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 8px;
 		box-sizing: border-box;
+		background: rgba(255, 255, 255, 0.8);
+		font-size: 14px;
+		color: #1C1C1E;
 	}
 
 	.picker-text {
-		color: #999;
+		color: #8E8E93;
 	}
 
 	.textarea {
 		height: 100px;
-		padding: 10px;
+		padding: 12px;
 		line-height: 1.5;
 	}
 
 	.submit-btn {
 		width: 100%;
-		height: 40px;
-		line-height: 40px;
-		background-color: #007aff;
+		height: 44px;
+		line-height: 44px;
+		background: #007AFF;
 		color: #fff;
-		border-radius: 4px;
+		border-radius: 10px;
 		margin-top: 20px;
+		font-size: 16px;
+		font-weight: 500;
+		border: none;
+		transition: all 0.2s ease;
+	}
+
+	.submit-btn:active {
+		transform: scale(0.98);
+		opacity: 0.9;
 	}
 </style>
