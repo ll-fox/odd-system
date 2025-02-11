@@ -2,7 +2,7 @@
 const db = uniCloud.database();
 
 exports.main = async (event, context) => {
-  const { trackingNumber, courier, remark } = event;
+  const { trackingNumber, courier, remark, status } = event;
   
   // 数据校验
   if (!trackingNumber || !courier) {
@@ -17,6 +17,7 @@ exports.main = async (event, context) => {
       trackingNumber,
       courier,
       remark: remark || '',
+      status: status || '待处理',
       createTime: Date.now()
     });
     

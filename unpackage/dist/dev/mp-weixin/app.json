@@ -1,12 +1,29 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/query/query"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "金翁农业",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#c49b45",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "提交"
+      },
+      {
+        "pagePath": "pages/query/query",
+        "text": "查询"
+      }
+    ]
   },
   "usingComponents": {}
 }

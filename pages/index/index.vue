@@ -1,9 +1,12 @@
 <template>
 	<view class="content">
+		<view class="logo-container">
+			<image class="logo" src="/static/logo.png" mode="aspectFit"></image>
+		</view>
 		<view class="form-container">
 			<view class="form-item">
 				<text class="label">快递单号</text>
-				<input class="input" v-model="form.trackingNumber" placeholder="请输入快递单号" />
+				<input class="input" v-model="form.trackingNumber" placeholder="请输入快递单号" @input="onTrackingNumberInput" />
 			</view>
 			<view class="form-item">
 				<text class="label">快递公司</text>
@@ -15,8 +18,13 @@
 				<text class="label">备注</text>
 				<textarea class="textarea" v-model="form.remark" placeholder="请输入备注" />
 			</view>
-			<button class="submit-btn" @click="onSubmit">提交</button>
+			<button class="submit-btn" @click="onSubmit">
+				<text>提交</text>
+			</button>
 		</view>
+	</view>
+	<view v-if="loading" class="global-loading">
+		<view class="loading"></view>
 	</view>
 </template>
 
@@ -29,7 +37,8 @@
 					courier: '',
 					remark: ''
 				},
-				courierCompanies: ['顺丰速运', '圆通快递', '中通快递', '韵达快递', '京东物流', '邮政快递']
+				courierCompanies: ['顺丰速运', '圆通快递', '中通快递', '韵达快递', '京东物流', '邮政快递'],
+				loading: false
 			}
 		},
 		onLoad() {
@@ -39,52 +48,69 @@
 			onCourierChange(e) {
 				this.form.courier = this.courierCompanies[e.detail.value]
 			},
+			onTrackingNumberInput(event) {
+				const value = event.detail.value;
+				// 允许字母和数字，禁止汉字
+				const filteredValue = value.replace(/[^\u0000-\u007F]/g, ''); // 过滤掉汉字
+				this.$nextTick(() => {
+					this.form.trackingNumber = filteredValue;
+				});
+			},
 			async onSubmit() {
-				if (!this.form.trackingNumber) {
+				if (this.loading) return;
+				this.loading = true;
+				
+				if (!this.form.trackingNumber.trim()) {
 					uni.showToast({
 						title: '请填写快递单号',
 						icon: 'none'
-					})
-					return
+					});
+					this.loading = false;
+					return;
 				}
 				if (!this.form.courier) {
 					uni.showToast({
 						title: '请选择快递公司',
 						icon: 'none'
-					})
-					return
+					});
+					this.loading = false;
+					return;
 				}
 
 				try {
+					const formData = {
+						...this.form,
+						status: '待处理' // 明确设置状态为待处理
+					};
+
 					const res = await uniCloud.callFunction({
 						name: 'feedback',
-						data: {
-							...this.form,
-							status: '待处理'
-						}
-					})
+						data: formData
+					});
 
 					if (res.result.code === 200) {
 						uni.showToast({
 							title: '提交成功'
-						})
+						});
 						// 清空表单
 						this.form = {
 							trackingNumber: '',
 							courier: '',
 							remark: ''
-						}
+						};
 					} else {
 						uni.showToast({
 							title: res.result.message || '提交失败',
 							icon: 'none'
-						})
+						});
 					}
 				} catch (error) {
 					uni.showToast({
 						title: '网络错误，请重试',
 						icon: 'none'
-					})
+					});
+				} finally {
+					this.loading = false;
 				}
 			}
 		}
@@ -92,6 +118,19 @@
 </script>
 
 <style>
+	.logo-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
+	.logo {
+		width: 70%;
+		height: 90px;
+	}
+
 	.content {
 		padding: 20px;
 		background: linear-gradient(180deg, #F5F5F7 0%, #FFFFFF 100%);
@@ -158,7 +197,29 @@
 	}
 
 	.submit-btn:active {
-		transform: scale(0.98);
+		background-color: #c49b45;
 		opacity: 0.9;
+	}
+
+	.global-loading {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 999;
+	}
+
+	.loading {
+		width: 40px;
+		height: 40px;
+		border: 4px solid rgba(196, 155, 69, 0.2);
+		border-top: 4px solid #c49b45;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
 	}
 </style>

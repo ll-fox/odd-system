@@ -88,6 +88,26 @@ const looseToNumber = (val) => {
   const n2 = parseFloat(val);
   return isNaN(n2) ? val : n2;
 };
+function normalizeClass(value) {
+  let res = "";
+  if (isString(value)) {
+    res = value;
+  } else if (isArray(value)) {
+    for (let i2 = 0; i2 < value.length; i2++) {
+      const normalized = normalizeClass(value[i2]);
+      if (normalized) {
+        res += normalized + " ";
+      }
+    }
+  } else if (isObject(value)) {
+    for (const name in value) {
+      if (value[name]) {
+        res += name + " ";
+      }
+    }
+  }
+  return res.trim();
+}
 const toDisplayString = (val) => {
   return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? JSON.stringify(val, replacer, 2) : String(val);
 };
@@ -5055,6 +5075,8 @@ function patchStopImmediatePropagation(e2, value) {
   }
 }
 const o$1 = (value, key) => vOn(value, key);
+const e$1 = (target, ...sources) => extend(target, ...sources);
+const n$1 = (value) => normalizeClass(value);
 const t$1 = (val) => toDisplayString(val);
 function createApp$1(rootComponent, rootProps = null) {
   rootComponent && (rootComponent.mpType = "app");
@@ -7691,6 +7713,12 @@ const pages = [
     style: {
       navigationBarTitleText: "金翁农业"
     }
+  },
+  {
+    path: "pages/query/query",
+    style: {
+      navigationBarTitleText: "金翁农业"
+    }
   }
 ];
 const globalStyle = {
@@ -7699,10 +7727,27 @@ const globalStyle = {
   navigationBarBackgroundColor: "#F8F8F8",
   backgroundColor: "#F8F8F8"
 };
+const tabBar = {
+  color: "#999",
+  selectedColor: "#c49b45",
+  backgroundColor: "#fff",
+  borderStyle: "black",
+  list: [
+    {
+      pagePath: "pages/index/index",
+      text: "提交"
+    },
+    {
+      pagePath: "pages/query/query",
+      text: "查询"
+    }
+  ]
+};
 const uniIdRouter = {};
 const e = {
   pages,
   globalStyle,
+  tabBar,
   uniIdRouter
 };
 var define_process_env_UNI_SECURE_NETWORK_CONFIG_default = [];
@@ -10547,8 +10592,10 @@ let Zs = new class {
 var er = Zs;
 exports._export_sfc = _export_sfc;
 exports.createSSRApp = createSSRApp;
+exports.e = e$1;
 exports.er = er;
 exports.index = index;
+exports.n = n$1;
 exports.o = o$1;
 exports.t = t$1;
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map
