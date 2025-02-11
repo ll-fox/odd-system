@@ -13,6 +13,20 @@ exports.main = async (event, context) => {
   }
 
   try {
+    // 新增查重逻辑
+    const checkRes = await db.collection('feedback')
+      .where({
+        trackingNumber: trackingNumber
+      })
+      .get();
+
+    if (checkRes.data.length > 0) {
+      return {
+        code: 400,
+        message: '快递单号已存在，请勿重复提交'
+      };
+    }
+
     const result = await db.collection('feedback').add({
       trackingNumber,
       courier,

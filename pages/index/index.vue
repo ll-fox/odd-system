@@ -80,7 +80,7 @@
 				try {
 					const formData = {
 						...this.form,
-						status: '待处理' // 明确设置状态为待处理
+						status: '待处理'
 					};
 
 					const res = await uniCloud.callFunction({
@@ -92,12 +92,16 @@
 						uni.showToast({
 							title: '提交成功'
 						});
-						// 清空表单
 						this.form = {
 							trackingNumber: '',
 							courier: '',
 							remark: ''
 						};
+					} else if (res.result.code === 400) {
+						uni.showToast({
+							title: res.result.message || '提交失败',
+							icon: 'none'
+						});
 					} else {
 						uni.showToast({
 							title: res.result.message || '提交失败',

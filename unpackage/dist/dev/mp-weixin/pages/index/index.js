@@ -50,7 +50,6 @@ const _sfc_main = {
         const formData = {
           ...this.form,
           status: "待处理"
-          // 明确设置状态为待处理
         };
         const res = await common_vendor.er.callFunction({
           name: "feedback",
@@ -65,6 +64,11 @@ const _sfc_main = {
             courier: "",
             remark: ""
           };
+        } else if (res.result.code === 400) {
+          common_vendor.index.showToast({
+            title: res.result.message || "提交失败",
+            icon: "none"
+          });
         } else {
           common_vendor.index.showToast({
             title: res.result.message || "提交失败",
