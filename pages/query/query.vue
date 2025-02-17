@@ -37,7 +37,18 @@
           </view>
           <view class="result-item" v-if="result.status === '已处理' && result.feedback">
             <text class="result-label">处理意见</text>
-            <text class="result-value">{{ result.feedback }}</text>
+            <view class="feedback-content">
+              <text class="result-value">{{ result.feedback }}</text>
+              <view class="feedback-link" @click="openFeedbackDialog">不满意？继续反馈</view>
+            </view>
+          </view>
+          <view class="result-item" v-if="result.secondaryFeedback">
+            <text class="result-label">上次反馈内容</text>
+            <text class="result-value">{{ result.secondaryFeedback }}</text>
+          </view>
+          <view class="result-item" v-if="result.feedbackTime">
+            <text class="result-label">上次反馈时间</text>
+            <text class="result-value">{{ formatTime(result.feedbackTime) }}</text>
           </view>
           <view class="result-item">
             <text class="result-label">创建时间</text>
@@ -50,16 +61,30 @@
     <view v-if="loading" class="global-loading">
       <view class="loading"></view>
     </view>
+
+    <FeedbackDialog
+      :visible="showFeedbackDialog"
+      title="二次反馈"
+      @close="showFeedbackDialog = false"
+      @confirm="submitSecondaryFeedback"
+    />
   </view>
 </template>
 
 <script>
+import FeedbackDialog from '@/components/FeedbackDialog.vue';
+
 export default {
+  components: {
+    FeedbackDialog
+  },
   data() {
     return {
       trackingNumber: '',
       result: null,
-      loading: false
+      loading: false,
+      feedbackText: '',
+      showFeedbackDialog: false
     };
   },
   methods: {
@@ -132,6 +157,34 @@ export default {
       const seconds = String(date.getSeconds()).padStart(2, '0');
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     },
+    openFeedbackDialog() {
+      this.showFeedbackDialog = true;
+    },
+    async submitSecondaryFeedback(content) {
+      if (!content.trim()) {
+        uni.showToast({ title: '反馈内容不能为空', icon: 'none' });
+        return;
+      }
+      
+      try {
+        const res = await uniCloud.callFunction({
+          name: 'update-feedback',
+          data: {
+            trackingNumber: this.result.trackingNumber,
+            secondaryFeedback: content,
+            feedbackTime: Date.now()
+          }
+        });
+
+        if (res.result.code === 200) {
+          uni.showToast({ title: '反馈提交成功' });
+          this.showFeedbackDialog = false;
+          this.onQuery();
+        }
+      } catch (error) {
+        uni.showToast({ title: '提交失败，请重试', icon: 'none' });
+      }
+    }
   },
 };
 </script>
@@ -277,5 +330,20 @@ export default {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.feedback-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.feedback-link {
+  color: #c49b45;
+  font-size: 12px;
+  text-decoration: underline;
+  margin-top: 4px;
+  padding: 2px 0;
 }
 </style> 

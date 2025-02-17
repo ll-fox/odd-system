@@ -1,0 +1,1 @@
+<view wx:if="{{a}}" class="dialog"><view class="dialog-content"><text class="dialog-title">{{b}}</text><block wx:if="{{r0}}"><textarea class="dialog-input" placeholder="请输入您的反馈内容" value="{{c}}" bindinput="{{d}}"></textarea></block><view class="dialog-buttons"><button bindtap="{{e}}">取消</button><button bindtap="{{f}}">提交</button></view></view></view>
