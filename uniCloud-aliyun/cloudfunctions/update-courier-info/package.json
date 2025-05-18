@@ -1,0 +1,13 @@
+{
+  "name": "update-courier-info",
+  "version": "1.0.0",
+  "description": "更新快递信息",
+  "main": "index.js",
+  "dependencies": {},
+  "cloudfunction-config": {
+    "concurrency": 1,
+    "memorySize": 256,
+    "timeout": 5,
+    "triggers": []
+  }
+} 

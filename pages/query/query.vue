@@ -14,7 +14,16 @@
     <view class="result-container" v-if="result">
       <view class="result-card">
         <view class="result-section">
-          <text class="section-title">快递信息</text>
+          <view class="section-header">
+            <text class="section-title">快递信息</text>
+            <view 
+              v-if="['待处理', '处理中'].includes(result.status)" 
+              class="edit-link" 
+              @click="openEditDialog"
+            >
+              编辑
+            </view>
+          </view>
           <view class="result-item">
             <text class="result-label">快递单号</text>
             <text class="result-value">{{ result.trackingNumber }}</text>
@@ -68,15 +77,25 @@
       @close="showFeedbackDialog = false"
       @confirm="submitSecondaryFeedback"
     />
+
+    <EditCourierDialog
+      :visible="showEditDialog"
+      title="编辑快递信息"
+      :trackingData="result"
+      @close="showEditDialog = false"
+      @confirm="updateCourierInfo"
+    />
   </view>
 </template>
 
 <script>
 import FeedbackDialog from '@/components/FeedbackDialog.vue';
+import EditCourierDialog from '@/components/EditCourierDialog.vue';
 
 export default {
   components: {
-    FeedbackDialog
+    FeedbackDialog,
+    EditCourierDialog
   },
   data() {
     return {
@@ -84,7 +103,8 @@ export default {
       result: null,
       loading: false,
       feedbackText: '',
-      showFeedbackDialog: false
+      showFeedbackDialog: false,
+      showEditDialog: false
     };
   },
   methods: {
@@ -184,6 +204,39 @@ export default {
       } catch (error) {
         uni.showToast({ title: '提交失败，请重试', icon: 'none' });
       }
+    },
+    openEditDialog() {
+      this.showEditDialog = true;
+    },
+    async updateCourierInfo(courierData) {
+      if (!courierData.courier.trim()) {
+        uni.showToast({ title: '快递公司不能为空', icon: 'none' });
+        return;
+      }
+      
+      try {
+        this.loading = true;
+        const res = await uniCloud.callFunction({
+          name: 'update-courier-info',
+          data: {
+            trackingNumber: courierData.trackingNumber,
+            courier: courierData.courier,
+            remark: courierData.remark
+          }
+        });
+
+        if (res.result.code === 200) {
+          uni.showToast({ title: '更新成功' });
+          this.showEditDialog = false;
+          this.onQuery();
+        } else {
+          uni.showToast({ title: res.result.message || '更新失败', icon: 'none' });
+        }
+      } catch (error) {
+        uni.showToast({ title: '提交失败，请重试', icon: 'none' });
+      } finally {
+        this.loading = false;
+      }
     }
   },
 };
@@ -269,12 +322,24 @@ export default {
   border-bottom: none;
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
 .section-title {
-  display: block;
   font-size: 13px;
   color: #8E8E93;
-  margin-bottom: 12px;
   font-weight: 500;
+}
+
+.edit-link {
+  color: #c49b45;
+  font-size: 13px;
+  padding: 2px 4px;
+  text-decoration: none;
 }
 
 .result-item {

@@ -69,12 +69,22 @@
 .result-section:last-child {
   border-bottom: none;
 }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
 .section-title {
-  display: block;
   font-size: 13px;
   color: #8E8E93;
-  margin-bottom: 12px;
   font-weight: 500;
+}
+.edit-link {
+  color: #c49b45;
+  font-size: 13px;
+  padding: 2px 4px;
+  text-decoration: none;
 }
 .result-item {
   display: flex;

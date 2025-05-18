@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "金翁农业",
   "usingComponents": {
-    "feedback-dialog": "../../components/FeedbackDialog"
+    "feedback-dialog": "../../components/FeedbackDialog",
+    "edit-courier-dialog": "../../components/EditCourierDialog"
   }
 }
