@@ -6016,7 +6016,7 @@ function populateParameters(fromRes, toRes) {
   let _SDKVersion = SDKVersion;
   const hostLanguage = (language || "").replace(/_/g, "-");
   const parameters = {
-    appId: "__UNI__9DA10E5",
+    appId: "__UNI__B49402E",
     appName: "单号系统",
     appVersion: "1.0.0",
     appVersionCode: "100",
@@ -6165,7 +6165,7 @@ const getAppBaseInfo = {
       hostName: _hostName,
       hostSDKVersion: SDKVersion,
       hostTheme: theme,
-      appId: "__UNI__9DA10E5",
+      appId: "__UNI__B49402E",
       appName: "单号系统",
       appVersion: "1.0.0",
       appVersionCode: "100",
@@ -6829,9 +6829,9 @@ function initOnError() {
   };
 }
 function initRuntimeSocketService() {
-  const hosts = "127.0.0.1,192.168.1.29,10.251.1.1";
+  const hosts = "127.0.0.1,172.20.10.12,10.251.1.1";
   const port = "8090";
-  const id = "mp-weixin_GQ7htb";
+  const id = "mp-weixin_V91acG";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -8131,10 +8131,10 @@ class S {
 function T(e2) {
   return e2 && "string" == typeof e2 ? JSON.parse(e2) : e2;
 }
-const b = true, E = "mp-weixin", P = T(define_process_env_UNI_SECURE_NETWORK_CONFIG_default), C = E, A = T('{"address":["127.0.0.1","192.168.1.29","10.251.1.1"],"servePort":7002,"debugPort":9001,"initialLaunchType":"remote","skipFiles":["<node_internals>/**","/Applications/HBuilderX.app/Contents/HBuilderX/plugins/unicloud/**/*.js"]}'), O = T('[{"provider":"aliyun","spaceName":"odd-system","spaceId":"mp-60e233fe-dda0-4958-b8e5-6417b2046261","clientSecret":"cdg0OTiSD0rx8iLRzIxrpw==","endpoint":"https://api.next.bspapp.com"}]') || [];
+const b = true, E = "mp-weixin", P = T(define_process_env_UNI_SECURE_NETWORK_CONFIG_default), C = E, A = T('{"address":["127.0.0.1","172.20.10.12","10.251.1.1"],"servePort":7001,"debugPort":9000,"initialLaunchType":"remote","skipFiles":["<node_internals>/**","/Applications/HBuilderX.app/Contents/HBuilderX/plugins/unicloud/**/*.js"]}'), O = T('[{"provider":"aliyun","spaceName":"jwny-odd","spaceId":"mp-c4090afd-1695-4f7c-88b6-1af89c41ec37","clientSecret":"DfXsjU8FTqQkdt8eJmvYtg==","endpoint":"https://api.next.bspapp.com"}]') || [];
 let N = "";
 try {
-  N = "__UNI__9DA10E5";
+  N = "__UNI__B49402E";
 } catch (e2) {
 }
 let L = {};
